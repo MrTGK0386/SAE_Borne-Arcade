@@ -36,3 +36,19 @@ var serveur = http.createServer(function (req, res) {
 //on charge socket.io et on le branche au serveur http en cours
 var sockPrincipale = require("socket.io")(serveur);
 //Quand un client se connecte, on lui crée une socket dédié
+
+sockPrincipale.on("connection", function(sockVersClient) {
+    console.log("Un client est connecté !"); // on affiche un message console
+    sockVersClient.on("reponseDuClient", async function (mes){
+        console.log("Réponse reçu");
+        const coupServer = await randInt(shifumi);
+        await playShifumi(mes,coupServer,sockVersClient);
+        sockVersClient.emit('emojiJoueur',PlayerEmoji);
+        sockVersClient.emit('emojiServer',ServerEmoji);
+        sockVersClient.emit('scoreJoueur',pointPlayer);
+        sockVersClient.emit('scoreServer',pointServer);
+
+    });
+});
+
+console.log(`Serveur lancé sur : http://localhost:1234`);
