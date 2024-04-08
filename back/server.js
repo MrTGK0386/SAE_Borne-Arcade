@@ -1,33 +1,36 @@
 const http = require("http");
+const express = require("express");
 const request = require("request");
 const lecteur = require("fs");
+
+const authController = require("./controllers/authController");
+const app=express();
+
+app.set("view engine", "ejs");
+
+app.use(express.urlencoded({extended: true}));
+
+app.get("/", (req, res) => {
+    res.render("index", {user: req.user});
+})
+
+app.listen(3000, () => {
+    console.log("Server started on http://localhost:3000");
+})
 
 var compteur;
 
 var serveur = http.createServer(function (req, res) {
     // message de retour
     var pageDemande = req.url;
-    if (pageDemande == '/' || pageDemande == '/index.html') {
-        lecteur.readFile('index.html', 'utf-8', function (err, content) {
+    if (pageDemande == '/' || pageDemande == '/index.ejs') {
+        lecteur.readFile('index.ejs', 'utf-8', function (err, content) {
             res.writeHead(200, {'Content-Type': 'text/html'});
             res.write(content);
             res.end()
             console.log("Reponse envoyé !");
         })
-    } else if (pageDemande == '/pouet' || pageDemande == '/funny') {
-        lecteur.readFile('pouet.html', 'utf-8', function (err, content) {
-            res.writeHead(200, {'Content-Type': 'text/html'});
-            res.write(content);
-            res.end();
-            console.log("Reponse envoyé !");
-        })
-    } else if (pageDemande == '/lol') {
-        res.setHeader("Content-Type", "text/html");
-        res.write(`<h1>Hello World! Vous avez vu la page lol ${compteur} fois</h1>`);
-        res.end();
-        console.log("Reponse envoyé !");
     }
-
     compteur ++;
     console.log("Une requete a ete detecte");
     console.log(req.url);
