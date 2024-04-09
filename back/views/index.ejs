@@ -3,6 +3,7 @@
 <head>
     <title>My App</title>
 </head>
+<script src="/socket.io/socket.io.js"></script>
 <body>
 <%- include('header.ejs') -%>
 
@@ -13,4 +14,7 @@
     <a href="/login">Login</a>
 <% } %>
 </body>
+<script>
+    var sockVersServeur = io.connect();
+</script>
 </html>

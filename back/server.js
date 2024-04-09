@@ -1,9 +1,8 @@
 const http = require("http");
 const express = require("express");
-const request = require("request");
-const lecteur = require("fs");
 
 const authController = require("./controllers/authController");
+const socket = require("ejs/ejs");
 const app=express();
 
 app.set("view engine", "ejs");
@@ -16,4 +15,10 @@ app.get("/", (req, res) => {
 
 app.listen(3000, () => {
     console.log("Server started on http://localhost:3000");
+})
+
+var socketMain = require("socket.io")(app);
+
+socketMain.on("connection", (socketToClient) => {
+    console.log("Socket client connected");
 })
