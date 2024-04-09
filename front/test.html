@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Afficher les touches tapées</title>
+</head>
+<body>
+
+<script>
+// Fonction pour afficher les touches tapées
+function afficherTouche(event) {
+    // Récupérer l'identifiant de la touche
+    const touche = event.key;
+    // Afficher l'identifiant de la touche dans la console
+    console.log("Identifiant de la touche : " + touche);
+}
+
+// Ajouter un écouteur d'événement pour détecter les touches tapées
+document.addEventListener("keypress", afficherTouche);
+</script>
+
+<p>Appuyez sur une touche pour voir son identifiant affiché dans la console.</p>
+
+</body>
+</html>
