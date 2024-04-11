@@ -1,7 +1,6 @@
 const http = require("http");
 const express = require("express");
 
-const authController = require("./controllers/authController");
 const socket = require("ejs/ejs");
 const app=express();
 
@@ -12,10 +11,15 @@ app.use(express.urlencoded({extended: true}));
 const server = http.createServer(app);
 
 app.get("/", (req, res) => {
-    res.render("index", {user: req.user});
+    borneStatus = "home";
+    res.render("index", {borneStatus: borneStatus});
 })
 
-app.post("/login", authController.login);
+app.post("/list", (req, res) => {
+    borneStatus = "listing";
+    res.render("index", {borneStatus : borneStatus});
+})
+
 
 server.listen(3000, () => {
     console.log("Server started on http://localhost:3000");

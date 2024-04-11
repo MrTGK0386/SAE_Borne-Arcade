@@ -6,8 +6,16 @@
     <link rel="stylesheet" type="text/css" href="/style/style.css">
     <script src="/socket.io/socket.io.js"></script>
 </head>
+
 <body>
-<%- include('buttonHome') -%>
-<%- include('listinEtu') -%>
+<% if (borneStatus == "home") { %>
+    <%- include('home_menu') -%>
+<% } else if (borneStatus == "listing") { %>
+    <%- include('listing') -%>
+<% } else if (borneStatus == "playing") { %>
+    <%- include('game') -%>
+<% } %>
+<% if (popup == "on") { %>
+<%- include('popup') }-%><%}%>
 </body>
 </html>
