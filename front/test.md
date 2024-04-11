@@ -3,7 +3,7 @@ BDD :
         -Nom de la borne
         -Identifiants admin
         -Mot de passe admin
-        -Status de la borne (en cours, en pause, en maintenance)
+        -Status de la borne (en cours, en maintenance, arret)
         -Status dépot (disponible, indisponible)
         -runtime
 
