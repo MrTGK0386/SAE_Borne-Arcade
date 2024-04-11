@@ -1,16 +1,26 @@
-<div class=flex>
+<div class="flex">
     <ul class="row">
-            <% firstList.forEach(folder => { %>
-                    <li>
-                            <div class="game-tile li1" onclick="play('<%- folder %>')"><%= folder %></div>
-                    </li>
-            <% }) %>
+        <% firstList.forEach((folder, index) => { %>
+            <li>
+                <div class="game-tile li1">
+                    <%= folder %>
+                    <% if (previewPaths[index]) { %>
+                        <img src="<%= previewPaths[index] %>" alt="Preview Image" />
+                    <% } %>
+                </div>
+            </li>
+        <% }) %>
     </ul>
     <ul class="row">
-            <% secondList.forEach(folder => { %>
-                    <li>
-                            <div class="game-tile li2" onclick="play('<%- folder %>')"><%= folder %></div>
-                    </li>
-            <% }) %>
+        <% secondList.forEach((folder, index) => { %>
+            <li>
+                <div class="game-tile li2">
+                    <%= folder %>
+                    <% if (previewPaths[index + firstList.length]) { %>
+                        <img src="<%= previewPaths[index + firstList.length] %>" alt="Preview Image" />
+                    <% } %>
+                </div>
+            </li>
+        <% }) %>
     </ul>
 </div>

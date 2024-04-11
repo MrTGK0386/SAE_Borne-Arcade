@@ -34,7 +34,16 @@ app.post("/list", (req, res) => {
             const firstList = folders.slice(0, middleIndex);
             const secondList = folders.slice(middleIndex);
 
-            res.render('index', { borneStatus: 'listing', firstList, secondList });
+            // Récupération des chemins des images preview
+            const previewPaths = folders.map(folder => {
+                const previewPath = path.join(folderPath, folder, 'preview.png');
+                console.log(previewPath);
+                return fs.existsSync(previewPath) ? previewPath : null;
+            });
+
+
+
+            res.render('index', { borneStatus: 'listing', firstList, secondList, previewPaths });
         }
     });
 });
