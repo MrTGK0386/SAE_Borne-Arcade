@@ -1,11 +1,33 @@
+/* Les deux suivant empèche complétement l'utilisation de la souris */
+/*
+body {
+    cursor: none;
+}
+* {
+    pointer-events: none;
+}
+*/
+
+
 h1 {
     color: orange;
 }
 
-flex {
+.flex {
     display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
 }
 
 #homeBG {
     background-image: url("./images/home.jpg");
+}
+
+.tiles-active {
+    color: orange;
 }
