@@ -1,14 +1,16 @@
-<ul>
-        <% firstList.forEach(folder => { %>
-                <li>
-                        <div class="folder-div"><%= folder %></div>
-                </li>
-        <% }) %>
-</ul>
-<ul>
-        <% secondList.forEach(folder => { %>
-                <li>
-                        <div class="folder-div"><%= folder %></div>
-                </li>
-        <% }) %>
-</ul>
+<div class=flex>
+    <ul class="row">
+            <% firstList.forEach(folder => { %>
+                    <li>
+                            <div class="game-tile li1"><%= folder %></div>
+                    </li>
+            <% }) %>
+    </ul>
+    <ul class="row">
+            <% secondList.forEach(folder => { %>
+                    <li>
+                            <div class="game-tile li2"><%= folder %></div>
+                    </li>
+            <% }) %>
+    </ul>
+</div>
