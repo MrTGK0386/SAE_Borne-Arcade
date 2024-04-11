@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_mysqldb import MySQL
 import pandas as pd
-import bcrypt
+import bcrypt, time, random
 
 app = Flask(__name__)
 
@@ -22,7 +22,6 @@ def create_database():
         cursor.execute("""CREATE USER IF NOT EXISTS 'arcadeGames'@'localhost' IDENTIFIED BY 'arcadeGames';""")
         create_user_table()
         cursor.execute("""GRANT SELECT ON `arcade`.games TO 'arcadeGames'@'localhost';""")
-        cursor.execute("""GRANT SELECT, INSERT, UPDATE ON `arcade`.gamestats TO 'arcadeGames'@'localhost';""")
         cursor.execute("""GRANT SELECT (arcadeStatus) ON `arcade`.infoBorne TO 'arcadeGames'@'localhost';""")
         mysql.connection.commit()
         cursor.close()
@@ -43,27 +42,14 @@ def create_user_table():
         """)
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS games (
-                id VARCHAR(255) PRIMARY KEY,
-                name VARCHAR(255) NOT NULL,
+                name VARCHAR(255) PRIMARY KEY,
                 path VARCHAR(255) NOT NULL,
+                gitRepo VARCHAR(255),
                 launcherType VARCHAR(255) NOT NULL,
                 playerNumber VARCHAR(255) NOT NULL,
-                uploadDate tinyint(255) NOT NULL,
-                status tinyint(2) NOT NULL
-            )
-        """)
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS gameStats (
-                id VARCHAR(255) PRIMARY KEY,
-                highScore_info_1 VARCHAR(255) NOT NULL,
-                highScore_info_2 VARCHAR(255) NOT NULL,
-                highScore_info_3 VARCHAR(255) NOT NULL,
-                highScore_info_4 VARCHAR(255) NOT NULL,
-                highScore_info_5 VARCHAR(255) NOT NULL,
-                highScore_info_6 VARCHAR(255) NOT NULL,
-                highScore_info_7 VARCHAR(255) NOT NULL,
-                highScore_info_8 VARCHAR(255) NOT NULL,       
-                total_time_played tinyint(255) NOT NULL
+                uploadDate int NOT NULL,
+                status tinyint(2) NOT NULL,
+                total_time_played int NOT NULL
             )
         """)
         mysql.connection.commit()
@@ -87,7 +73,6 @@ def create_demo_account():
         for index, row in df.iterrows(): # Notez l'utilisation de 'index, row'
             name = row['name']
             login = row['login']
-            print(row['password'])
             hashed_password = bcrypt.hashpw(row['password'].encode('utf-8'), bcrypt.gensalt(12))
             arcadeStatus = row['arcadeStatus']
             gameUploadStatus = row['gameUploadStatus']
@@ -96,6 +81,35 @@ def create_demo_account():
             mysql.connection.commit()
         cursor.close()
 
+def create_demo_games():
+    with app.app_context():
+
+        data = {
+            'name': ["Super Mario", "The Legend of Zelda", "Minecraft", "Tetris", "FIFA", "Call of Duty", "Fortnite", "Pokemon", "Grand Theft Auto", "League of Legends", "Assassin's Creed", "Overwatch", "Fallout", "Counter-Strike", "Rocket League", "Donkey Kong"],
+        }
+        df = pd.DataFrame(data)
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("""USE arcade;""")
+        for index, row in df.iterrows(): # Notez l'utilisation de 'index, row'
+            name = row['name'],
+            path = "root",
+            gitRepo = "root",
+            launcherType = "phaser",
+            playerNumber = 0,
+            uploadDate = int(time.time()),
+            status = 2
+            total_time_played = get_random_time_elapsed()
+            cursor.execute('INSERT INTO games (name, path, gitRepo, launcherType, playerNumber, uploadDate, status, total_time_played) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)', (name, path, gitRepo, launcherType, playerNumber, uploadDate, status, total_time_played))
+            mysql.connection.commit()
+        cursor.close()
+
+def get_random_time_elapsed():
+    current_time = int(time.time()) -1712848361 - random.randint(-3000, 0)
+    return current_time
+
+
 if __name__ == '__main__':
     create_database()  # Appeler la fonction pour créer la base de données et l'utilisateur
     create_demo_account()
+    create_demo_games()

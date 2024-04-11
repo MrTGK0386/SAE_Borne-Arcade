@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>En-tête Latéral</title>
     <link rel="stylesheet" href="../static/css/dashboard.css">
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
 
 <header class="sidebar-header">
     <h1>Mon En-tête Latéral</h1>
     <!-- Ajoutez d'autres éléments d'en-tête ici si nécessaire -->
+    <a href="/logout">Se déconnecter</a>
 </header>
 
 <body>
@@ -37,12 +39,13 @@
                 <div class="container">
                     <h4>Téléverser un jeu</h4>
                     <div class="container-statusIcon">
-                        <svg width="135" height="135" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <a href=""><svg width="135" height="135" viewBox="0 0 135 135" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M67.5 130C32.9822 130 5 102.018 5 67.5C5 32.9822 32.9822 5 67.5 5" stroke="#4ECB71" stroke-width="10" stroke-linecap="round"/>
                             <path d="M67.5 5C102.018 5 130 32.9822 130 67.5C130 102.018 102.018 130 67.5 130" stroke="#4ECB71" stroke-width="10" stroke-linecap="round"/>
                             <path d="M67.5 95.2778V43.1945" stroke="#4ECB71" stroke-width="10" stroke-linecap="round"/>
                             <path d="M91.8056 67.5L67.5 43.1945L43.1945 67.5" stroke="#4ECB71" stroke-width="10" stroke-linecap="round"/>
                             </svg>
+                        </a>
                     </div>
                     <div class="container-status">
                         <p>Téléverser un Jeu</p>
@@ -50,6 +53,40 @@
                 </div>
             </div>
         </div>
+        <div class="content-body">
+            <div class="container-left">
+
+            </div>
+            <div class="container-right">
+                <div>
+                    <div id="chartContainer" style="height: 500px; width: 100%;"></div>
+                </div>
+            </div>
+        </div>
     </div>
+    <script>
+        // Récupérer les données des jeux depuis Flask
+        var gamesData = [
+            {% for game in top_five_games %}
+                { label: "{{ game.name }}", y: {{ game.total_time_played }}, duration: "{{ game.formatted_duration }}" },
+            {% endfor %}
+        ];
+
+        // Créer le graphique avec CanvasJS
+        var chart = new CanvasJS.Chart("chartContainer", {
+            theme: "light2", // "light1", "light2", "dark1", "dark2"
+            exportEnabled: true,
+            animationEnabled: true,
+            title: {
+                text: "Top 10 Jeux les plus joués"
+            },
+            data: [{
+                type: "pie",
+                dataPoints: gamesData,
+                toolTipContent: "{label}: {duration}" // Afficher la durée formatée dans le tooltip
+            }]
+        });
+        chart.render();
+    </script>
 </body>
 </html>

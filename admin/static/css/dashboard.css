@@ -31,10 +31,9 @@ svg {
 .sidebar-header {
     background-color: #333; /* Couleur de fond de l'en-tête */
     color: #fff; /* Couleur du texte de l'en-tête */
-    padding: 20px; /* Espacement du contenu */
     text-align: center; /* Centre le texte */
     height: 100vh; /* Taille de l'en-tête à 100% de la hauteur de la fenêtre */
-    width: 250px; /* Largeur de l'en-tête */
+    width: 12vw; /* Largeur de l'en-tête */
     position: fixed; /* Fixe l'en-tête */
     top: 0; /* Position l'en-tête en haut */
     left: 0; /* Position l'en-tête à gauche */
@@ -42,13 +41,13 @@ svg {
 
 /* Styles pour le contenu principal */
 .main-content {
-    margin-left: 250px; /* Ajoute une marge à gauche pour laisser de la place à l'en-tête */
+    margin-left: 12vw; /* Ajoute une marge à gauche pour laisser de la place à l'en-tête */
     height: 100vh;
 }
 
 .content-header {
-    width: 100%;
-    height: 300px;
+    width: 88vw;
+    height: 390px;
     background: linear-gradient(180deg, #5CB3A9 70%, #fff 30%);
     display: flex;
     flex-direction: column;
@@ -81,3 +80,35 @@ svg {
 .container-status {
     text-align: center;
 }
+
+.content-body{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.container-left{
+    background-color: #fff;
+    height:calc(55vh - 20px);
+    width: calc(38vw - 20px);    
+    border-radius: 24px;
+    box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.18);
+    padding: 20px;
+}
+
+.container-right{
+    background-color: #fff;
+    height:calc(55vh - 20px);
+    width: calc(38vw - 20px);    
+    border-radius: 24px;
+    box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.18);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.canvasjs-chart-credit{
+    display: none !important;
+}
+

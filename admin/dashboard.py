@@ -1,9 +1,12 @@
-from config.config import MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB
-from flask import Flask, render_template, request, redirect
+from config.config import MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB, SECRET_KEY
+from flask import Flask, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
+from random import randint
 import bcrypt
 
 app = Flask(__name__)
+app.secret_key = SECRET_KEY
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}/{MYSQL_DB}'
 db = SQLAlchemy(app)
 
@@ -15,29 +18,55 @@ class infoborne(db.Model):
     gameUploadStatus = db.Column(db.Boolean, nullable=False)
     runtime = db.Column(db.String(255), nullable=False)
 
+class games(db.Model):
+    name = db.Column(db.String(255), primary_key=True)
+    path = db.Column(db.String(255), nullable=False)
+    gitRepo = db.Column(db.String(255), nullable=True)
+    launcherType =db.Column(db.String(255), nullable=False)
+    playerNumber = db.Column(db.String(255), nullable=False)
+    uploadDate = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.SmallInteger, nullable=False)
+    total_time_played = db.Column(db.Integer, nullable=True)
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
+    if 'loggedin' in session:
+        return redirect('/dashboard') 
     if request.method == 'POST':
         login = request.form['login']
         password = request.form['password']
         user = infoborne.query.filter_by(login=login).first()
-
         if user:
             if bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+                session['loggedin'] = True
                 return redirect('dashboard')
             else:
                 error_message =  'Mot de passe incorecte'
-                return render_template('login.html', error_message=error_message)
+                arcadeName = infoborne.query.with_entities(infoborne.name).first()[0]
+                return render_template('login.html', error_message=error_message, arcadeName=arcadeName)
         else:
             error_message =  'Mot de passe incorecte'
-            return render_template('login.html', error_message=error_message)
-    return render_template('login.html')
+            arcadeName = infoborne.query.with_entities(infoborne.name).first()[0]
+            return render_template('login.html', error_message=error_message, arcadeName=arcadeName)
+    arcadeName = infoborne.query.with_entities(infoborne.name).first()[0]
+    return render_template('login.html', arcadeName=arcadeName)
+
+@app.route('/logout')
+def logout():
+    session.pop('loggedin', None)
+    return redirect("/")
 
 @app.route('/dashboard')
+
 def dashboard():
+    if 'loggedin' not in session:
+        return redirect('/') 
     arcadeStatus = infoborne.query.with_entities(infoborne.arcadeStatus).first()[0]
     gameUploadStatus = infoborne.query.with_entities(infoborne.gameUploadStatus).first()[0]
+    top_five_games = games.query.order_by(games.total_time_played.desc()).limit(10).all()
+    for game in top_five_games:
+        game.formatted_duration = format_duration(game.total_time_played)
+
 
     CHECKED_SVG = """<svg width="125" height="125" viewBox="0 0 125 125" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M62.5 0C27.9824 0 0 27.9824 0 62.5C0 97.0195 27.9824 125 62.5 125C97.0195 125 125 97.0195 125 62.5C125 27.9824 97.0195 0 62.5 0ZM62.5 117.311C32.3457 117.311 7.8125 92.6543 7.8125 62.4998C7.8125 32.3455 32.3457 7.81226 62.5 7.81226C92.6543 7.81226 117.188 32.3456 117.188 62.4998C117.188 92.6539 92.6543 117.311 62.5 117.311ZM87.4434 39.6309L50.7733 76.5312L34.2596 60.0176C32.7343 58.4922 30.2616 58.4922 28.7343 60.0176C27.2089 61.543 27.2089 64.0156 28.7343 65.541L48.0682 84.877C49.5936 86.4004 52.0663 86.4004 53.5936 84.877C53.7694 84.7012 53.9199 84.5096 54.0566 84.3105L92.9707 45.1561C94.4941 43.6307 94.4941 41.1581 92.9707 39.6309C91.4434 38.1055 88.9707 38.1055 87.4434 39.6309Z" fill="#4ECB71"/></svg>"""
     STOPPED_SVG = """<svg width="125" height="125" viewBox="0 0 125 125" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0 62.5C0 45.924 6.5848 30.0268 18.3058 18.3058C30.0268 6.5848 45.924 0 62.5 0C79.076 0 94.9731 6.5848 106.694 18.3058C118.415 30.0268 125 45.924 125 62.5C125 79.076 118.415 94.9731 106.694 106.694C94.9731 118.415 79.076 125 62.5 125C45.924 125 30.0268 118.415 18.3058 106.694C6.5848 94.9731 0 79.076 0 62.5ZM62.5 8.96497C48.3016 8.96497 34.6848 14.6053 24.645 24.645C14.6053 34.6848 8.96497 48.3016 8.96497 62.5C8.96497 76.6984 14.6053 90.3152 24.645 100.355C34.6848 110.395 48.3016 116.035 62.5 116.035C76.6984 116.035 90.3152 110.395 100.355 100.355C110.395 90.3152 116.035 76.6984 116.035 62.5C116.035 48.3016 110.395 34.6848 100.355 24.645C90.3152 14.6053 76.6984 8.96497 62.5 8.96497ZM84.7143 40.2952C85.5988 41.18 86.0957 42.3799 86.0957 43.6311C86.0957 44.8822 85.5988 46.0822 84.7143 46.967L69.1718 62.5L84.7143 78.033C85.6002 78.919 86.098 80.1206 86.098 81.3736C86.098 82.6266 85.6002 83.8283 84.7143 84.7143C83.8283 85.6002 82.6266 86.098 81.3736 86.098C80.1206 86.098 78.919 85.6002 78.033 84.7143L62.5 69.1718L46.967 84.7143C46.5283 85.153 46.0075 85.5009 45.4343 85.7384C44.8611 85.9758 44.2468 86.098 43.6264 86.098C43.006 86.098 42.3916 85.9758 41.8184 85.7384C41.2453 85.5009 40.7244 85.153 40.2857 84.7143C39.847 84.2756 39.4991 83.7547 39.2616 83.1816C39.0242 82.6084 38.902 81.994 38.902 81.3736C38.902 80.7532 39.0242 80.1389 39.2616 79.5657C39.4991 78.9925 39.847 78.4717 40.2857 78.033L55.8282 62.5L40.2857 46.967C39.3998 46.081 38.902 44.8794 38.902 43.6264C38.902 42.3734 39.3998 41.1717 40.2857 40.2857C41.1717 39.3998 42.3734 38.902 43.6264 38.902C44.8794 38.902 46.081 39.3998 46.967 40.2857L62.5 55.8282L78.033 40.2857C78.4713 39.8463 78.992 39.4977 79.5652 39.2598C80.1385 39.022 80.753 38.8995 81.3736 38.8995C81.9942 38.8995 82.6088 39.022 83.182 39.2598C83.7553 39.4977 84.276 39.8558 84.7143 40.2952Z" fill="#F24E1E"/></svg>"""
@@ -57,7 +86,21 @@ def dashboard():
     elif gameUploadStatus == 1:
         upload_status_svg = CHECKED_SVG
         upload_status_text = "Dépôts overts"
-    return render_template('dashboard.html', arcade_status_svg=arcade_status_svg, arcade_status_text=arcade_status_text, upload_status_svg=upload_status_svg, upload_status_text=upload_status_text)
+    return render_template('dashboard.html', arcade_status_svg=arcade_status_svg, arcade_status_text=arcade_status_text, upload_status_svg=upload_status_svg, upload_status_text=upload_status_text, top_five_games=top_five_games)
+
+def database_test():
+    with app.app_context():
+        try:
+            db.session.execute(text('SELECT 1'))
+            print('Connexion à la BDD réussi')
+        except Exception as e:
+            print('Connexion à la BDD échoué', e)
+
+def format_duration(seconds):
+    hours, remainder = divmod(seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    return f"{hours}h {minutes}m {seconds}s"
 
 if __name__ == '__main__':
+    database_test()
     app.run(debug=True)

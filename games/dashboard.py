@@ -9,7 +9,8 @@ def test_db_connection():
         conn = mysql.connector.connect(
             host='localhost',
             user='root',
-            password='root'
+            password='root',
+            port = 3307
         )
         conn.ping(reconnect=True)
         conn.close()
@@ -33,4 +34,4 @@ if (test_db_connection() == True):
     print("Connexion réussie")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host = '0.0.0.0', port='5000')
