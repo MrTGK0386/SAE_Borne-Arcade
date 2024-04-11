@@ -2,14 +2,14 @@
     <ul class="row">
             <% firstList.forEach(folder => { %>
                     <li>
-                            <div class="game-tile li1"><%= folder %></div>
+                            <div class="game-tile li1" onclick="play('<%- folder %>')"><%= folder %></div>
                     </li>
             <% }) %>
     </ul>
     <ul class="row">
             <% secondList.forEach(folder => { %>
                     <li>
-                            <div class="game-tile li2"><%= folder %></div>
+                            <div class="game-tile li2" onclick="play('<%- folder %>')"><%= folder %></div>
                     </li>
             <% }) %>
     </ul>
