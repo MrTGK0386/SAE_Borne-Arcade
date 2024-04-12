@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ game.name }} Information</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../static/css/game_info.css">
+</head>
+<body>
+    <div class="content">
+        <h1>{{ game.name }}</h1>
+        <p>Version: {{ game.version }}</p>
+        <p>Description: {{ game.description }}</p>
+        <p>Nom du créateur: {{ game.creator_name }}</p>
+        <p>Chemin: {{ game.path }}</p>
+        <p>Git Repo: {{ game.gitRepo }}</p>
+        <p>Type de launcher: {{ game.launcherType }}</p>
+        <p>Nombre de joueur: {{ game.playerNumber }}</p>
+        <p>Date d'upload: {{ game.uploadDate }}</p>
+    
+        <p>Temps joué: {{ game.total_time_played }}</p>
+    
+        <p>Status actuel: {{ game.status }}</p>
+        <p>*1 = En vérification, 2 = Validé, 3 = Non disponible</p>
+        <form action="/game_info/{{ game.name }}/update_status" method="post">
+            <label for="status">Changer le status:</label>
+            <select name="status" id="status">
+                <option value="2">Validé</option>
+                <option value="1">En vérification</option>
+                <option value="0">Non disponible</option>
+            </select>
+            <button type="submit">Confirm</button>
+        </form>
+    </div>
+    <div style="text-align: center;margin-top: 40px;">
+        <a href="/"><button>Retour</button></a>
+    </div>
+</body>
+</html>

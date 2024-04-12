@@ -32,7 +32,7 @@ def create_user_table():
         cursor.execute("""USE arcade;""")
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS infoBorne (
-                name VARCHAR(255) NOT NULL,
+                name VARCHAR(255) PRIMARY KEY,
                 login VARCHAR(255) NOT NULL,
                 password VARCHAR(255) NOT NULL,
                 arcadeStatus tinyint(2) NOT NULL,
@@ -43,13 +43,16 @@ def create_user_table():
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS games (
                 name VARCHAR(255) PRIMARY KEY,
+                version VARCHAR(255),
+                description TEXT,
+                creator_name TEXT,
                 path VARCHAR(255) NOT NULL,
                 gitRepo VARCHAR(255),
                 launcherType VARCHAR(255) NOT NULL,
                 playerNumber VARCHAR(255) NOT NULL,
                 uploadDate int NOT NULL,
                 status tinyint(2) NOT NULL,
-                total_time_played int NOT NULL
+                total_time_played int NULL
             )
         """)
         mysql.connection.commit()
@@ -86,6 +89,7 @@ def create_demo_games():
 
         data = {
             'name': ["Super Mario", "The Legend of Zelda", "Minecraft", "Tetris", "FIFA", "Call of Duty", "Fortnite", "Pokemon", "Grand Theft Auto", "League of Legends", "Assassin's Creed", "Overwatch", "Fallout", "Counter-Strike", "Rocket League", "Donkey Kong"],
+            'version': ['1.0','2.1', '1.18', '1.0', '1.0', '1.0', '1.0', '1.0', '1.0', '1.0', '1.0', '1.0', '1.0', '1.0', '1.0', '1.0'],
         }
         df = pd.DataFrame(data)
 
@@ -93,6 +97,7 @@ def create_demo_games():
         cursor.execute("""USE arcade;""")
         for index, row in df.iterrows(): # Notez l'utilisation de 'index, row'
             name = row['name'],
+            version = row['version']
             path = "root",
             gitRepo = "root",
             launcherType = "phaser",
@@ -100,7 +105,7 @@ def create_demo_games():
             uploadDate = int(time.time()),
             status = 2
             total_time_played = get_random_time_elapsed()
-            cursor.execute('INSERT INTO games (name, path, gitRepo, launcherType, playerNumber, uploadDate, status, total_time_played) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)', (name, path, gitRepo, launcherType, playerNumber, uploadDate, status, total_time_played))
+            cursor.execute('INSERT INTO games (name,version, path, gitRepo, launcherType, playerNumber, uploadDate, status, total_time_played) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)', (name, version, path, gitRepo, launcherType, playerNumber, uploadDate, status, total_time_played))
             mysql.connection.commit()
         cursor.close()
 
@@ -112,4 +117,4 @@ def get_random_time_elapsed():
 if __name__ == '__main__':
     create_database()  # Appeler la fonction pour créer la base de données et l'utilisateur
     create_demo_account()
-    create_demo_games()
+    # create_demo_games()
