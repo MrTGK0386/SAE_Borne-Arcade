@@ -4,7 +4,6 @@ const fs = require("fs");
 const path = require("path");
 const { exec } = require('child_process');
 
-const socket = require("ejs/ejs");
 const app=express();
 
 app.use(express.static('public'));
@@ -15,8 +14,20 @@ const server = http.createServer(app);
 
 
 app.get("/", (req, res) => {
-    borneStatus = "home";
-    res.render("index", {borneStatus: borneStatus});
+
+    const paramValue = req.query.path;
+
+    if (paramValue != null) {
+        const gamePath = paramValue;
+
+        //console.log(gamePath);
+
+        res.render('index', {borneStatus: 'playing', gamePath});
+    } else {
+        borneStatus = "home";
+        res.render("index", {borneStatus: borneStatus});
+    }
+
 })
 
 app.post("/list", (req, res) => {
@@ -51,28 +62,7 @@ app.post("/list", (req, res) => {
     });
 });
 
-app.get("/games/*/", (req, res) => {
-
-    const gamePath = 'public/' + req.params[0];
-
-    exec('sudo npm install', { cwd: gamePath }, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Erreur lors de l'exécution de la commande: ${error}`);
-            return;
-        }
-        console.log(`stdout: ${stdout}`);
-        console.error(`stderr: ${stderr}`);
-
-        res.render('index', {borneStatus: 'playing', popup: 'off', gamePath});
-    });
-})
 
 server.listen(3000, () => {
     console.log("Server started on http://localhost:3000");
-})
-
-var socketMain = require("socket.io")(server);
-
- socketMain.on("connection", (socketToClient) => {
-    console.log("Socket client connected");
 })

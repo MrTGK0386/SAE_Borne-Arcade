@@ -1,4 +1,4 @@
-<div id="popup">
+<div id="popup" class="off">
     <p>Si vous quittez la partie, vous perdrez votre avancement</p>
     <form action="/list" method="post">
         <button id="quitButton" class="button rounded transparent" type="submit">
@@ -10,4 +10,6 @@
     </button>
 </div>
 
-<embed type="text/html" src="<%=gamePath%>" width="1280" height="720">
+<!--<embed type="text/html" src="<%=gamePath%>" width="1280" height="720">-->
+
+<iframe src="<%=gamePath%>" title="game" width="1280" height="720"></iframe>

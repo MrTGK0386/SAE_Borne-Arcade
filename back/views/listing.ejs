@@ -2,7 +2,7 @@
     <ul class="row">
         <% firstList.forEach((folder, index) => { %>
             <li>
-                <div class="game-tile li1">
+                <div class="game-tile li1" id="<%= folder %>">
                     <%= folder %>
                     <% if (previewPaths[index]) { %>
                         <img src="<%= previewPaths[index] %>" alt="Preview Image" />
@@ -14,7 +14,7 @@
     <ul class="row">
         <% secondList.forEach((folder, index) => { %>
             <li>
-                <div class="game-tile li2">
+                <div class="game-tile li2" id="<%= folder%>">
                     <%= folder %>
                     <% if (previewPaths[index + firstList.length]) { %>
                         <img src="<%= previewPaths[index + firstList.length] %>" alt="Preview Image" />
