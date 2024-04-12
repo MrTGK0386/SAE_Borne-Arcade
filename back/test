@@ -1,0 +1,32 @@
+app.get("/games/*/", (req, res) => {
+
+    const gamePath = 'public/' + req;
+
+    console.log(gamePath);
+
+    res.render('index', {borneStatus: 'playing', popup: 'off', gamePath});
+
+    exec('sudo npm install', { cwd: gamePath }, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Erreur lors de l'exécution de la commande: ${error}`);
+            return;
+        }
+        console.log(`stdout: ${stdout}`);
+        console.error(`stderr: ${stderr}`);
+
+
+    });
+})
+
+
+
+    if (paramValue !== null) {
+        const gamePath = 'public/' + paramValue;
+
+        console.log(gamePath);
+
+        res.render('index', {borneStatus: 'playing', popup: 'off', gamePath});
+    } else {
+        borneStatus = "home";
+        res.render("index", {borneStatus: borneStatus});
+    }
