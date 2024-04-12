@@ -1,4 +1,13 @@
-<% if (popup == "on") { %>
-    <%- include('popup') -%>
-<%}%> <%#surement une idée de con%>
+<div id="popup">
+    <p>Si vous quittez la partie, vous perdrez votre avancement</p>
+    <form action="/list" method="post">
+        <button id="quitButton" class="button rounded transparent" type="submit">
+            Quitter
+        </button>
+    </form>
+    <button id="resumeButton" class="button rounded transparent" onclick="resume()">
+        Reprendre
+    </button>
+</div>
 
+<embed type="text/html" src="<%=gamePath%>" width="1280" height="720">
