@@ -65,8 +65,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (borneStatus === 'listing') {
         document.addEventListener('keydown', function (event) {
             if (event.key === 'Enter') {
-               const folderName = document.querySelector('.tiles-active').innerHTML;
-               console.log(folderName);
+               const folderName = document.querySelector('.tiles-active').getAttribute('id');
+               //console.log(folderName);
                play(folderName);
             }
         })
@@ -74,6 +74,32 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 function play(folder){
-    const gamePath = "/games/"+folder;
-    console.log(gamePath);
+    const gamePath = "/?path=games/"+folder;
+    //console.log(gamePath);
+    window.location.href=gamePath;
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    if (borneStatus === 'playing') {
+
+
+        const popup = document.querySelector('#popup');
+        const iframe = document.querySelector('iframe');
+        console.log("entered event");
+
+        document.addEventListener('keydown', function (event) {
+
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                event.stopPropagation();
+                console.log("popup class changed")
+                if (popup.classList.contains('on')) {
+                    popup.classList.remove('on');
+                } else {
+                    popup.classList.add('on');
+                }
+            }
+        })
+    }
+})
+

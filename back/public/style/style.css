@@ -31,3 +31,18 @@ h1 {
 .tiles-active {
     color: orange;
 }
+
+#popup {
+    z-index: 99;
+    background-color: grey;
+}
+
+#popup.off {
+    display: none;
+}
+
+#popup.on {
+    display: block; !important;
+}
+
+
