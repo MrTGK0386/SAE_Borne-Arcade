@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>My App</title>
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="/style/style.css">
-</head>
+    <head>
+        <title>My App</title>
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" type="text/css" href="/style/style.css">
+    </head>
 
-<body>
-<% if (borneStatus == "home") { %>
-    <%- include('home_menu') -%>
-<% } else if (borneStatus == "listing") { %>
-    <%- include('listing') -%>
-<% } else if (borneStatus == "playing") { %>
-    <%- include('game') -%>
-<% } %>
-</body>
-<script>var borneStatus = <%- JSON.stringify(borneStatus) %></script>
-<script src="/scripts/main.js"></script>
+    <body>
+        <% if (borneStatus == "home") { %>
+            <%- include('home_menu') -%>
+        <% } else if (borneStatus == "listing") { %>
+            <%- include('listing') -%>
+        <% } else if (borneStatus == "playing") { %>
+            <%- include('game') -%>
+        <% } %>
+        <audio id="start">
+            <source src="./style/sound/start.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="selected">
+            <source src="./style/sound/selected.mp3" type="audio/mpeg">
+        </audio>
+    </body>
+    <script>var borneStatus = <%- JSON.stringify(borneStatus) %></script>
+    <script src="/scripts/main.js"></script>
 </html>

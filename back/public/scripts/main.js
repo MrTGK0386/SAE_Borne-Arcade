@@ -6,9 +6,14 @@ document.addEventListener('DOMContentLoaded', function () {
     let lastListe = listeBas;
 
     document.addEventListener('keydown', function (event) {
+        function replaySound() {
+            audio.currentTime = 0; // Réinitialise la position de lecture à 0 (le début du son)
+            audio.play(); // Joue le son
+          }
+        var audio = document.getElementById("selected");
         if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
             event.preventDefault(); // Empêcher le défilement de la page avec les touches fléchées
-
+            replaySound()
             if (event.key === 'ArrowLeft') {
                 currentTileIndex = Math.max(currentTileIndex - 1, 0);
             } else if (event.key === 'ArrowRight') {
@@ -26,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
             event.preventDefault();
-
+            replaySound()
             if (event.key === 'ArrowDown') {
                 currentListe = listeBas;
                 lastListe = listeHaut;
@@ -56,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.addEventListener('keydown', function (event) {
             if (event.key === 'Enter') {
                 document.querySelector('#boutonMenu').click();
+
             }
         })
     }
@@ -63,6 +69,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener('DOMContentLoaded', function () {
     if (borneStatus === 'listing') {
+        var audio = document.getElementById("start");
+        audio.play();
         document.addEventListener('keydown', function (event) {
             if (event.key === 'Enter') {
                const folderName = document.querySelector('.tiles-active').getAttribute('id');
