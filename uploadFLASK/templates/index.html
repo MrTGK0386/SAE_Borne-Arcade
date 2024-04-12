@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uploader un fichier</title>
+    <link rel="stylesheet" href="../static/css/index.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Déposer un jeu</h1>
+        <div class="gitbutton" style="cursor: pointer;" onclick="toggleForms()">
+            <svg id="gitIcon" xmlns="http://www.w3.org/2000/svg" width="125" height="125" viewBox="0 0 125 125" fill="none">
+                <path d="M62.5 10.4167C55.6603 10.4167 48.8876 11.7638 42.5686 14.3813C36.2495 16.9987 30.5079 20.8351 25.6715 25.6715C15.904 35.439 10.4167 48.6866 10.4167 62.5C10.4167 85.5208 25.3646 105.052 46.0417 111.979C48.6459 112.396 49.4792 110.781 49.4792 109.375V100.573C35.0521 103.698 31.9792 93.5938 31.9792 93.5938C29.5834 87.5521 26.1979 85.9375 26.1979 85.9375C21.4584 82.7083 26.5625 82.8125 26.5625 82.8125C31.7709 83.1771 34.5313 88.1771 34.5313 88.1771C39.0625 96.0938 46.7188 93.75 49.6875 92.5C50.1563 89.1146 51.5104 86.8229 52.9688 85.5208C41.4063 84.2188 29.2709 79.7396 29.2709 59.8958C29.2709 54.1146 31.25 49.4792 34.6354 45.7813C34.1146 44.4792 32.2917 39.0625 35.1563 32.0313C35.1563 32.0313 39.5313 30.625 49.4792 37.3438C53.5938 36.1979 58.0729 35.625 62.5 35.625C66.9271 35.625 71.4063 36.1979 75.5209 37.3438C85.4688 30.625 89.8438 32.0313 89.8438 32.0313C92.7084 39.0625 90.8854 44.4792 90.3646 45.7813C93.75 49.4792 95.7292 54.1146 95.7292 59.8958C95.7292 79.7917 83.5417 84.1667 71.9271 85.4688C73.8021 87.0833 75.5209 90.2604 75.5209 95.1042V109.375C75.5209 110.781 76.3542 112.448 79.0104 111.979C99.6875 105 114.583 85.5208 114.583 62.5C114.583 55.6603 113.236 48.8876 110.619 42.5686C108.001 36.2495 104.165 30.5079 99.3285 25.6715C94.4921 20.8351 88.7505 16.9987 82.4315 14.3813C76.1124 11.7638 69.3397 10.4167 62.5 10.4167Z" fill="#fff"/>
+            </svg>
+        </div>
+        <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data" style="display: block;">
+            <div class="form-group" style="display: flex;flex-direction:column;text-align: center;justify-content: center;align-items: center;">
+                <div class="input-div">
+                    <input class="input" name="file" type="file" id="fileInput">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" stroke-linejoin="round" stroke-linecap="round" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke="currentColor" class="icon"><polyline points="16 16 12 12 8 16"></polyline><line y2="21" x2="12" y1="12" x1="12"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path><polyline points="16 16 12 12 8 16"></polyline></svg>
+                </div>
+                <span id="fileName"></span>
+            </div>
+            <button type="submit" value="Envoyer" style="margin-top: 20px;">Envoyer</button>
+        </form>
+
+
+        <form id="fetchForm" action="/fetch" method="post" style="display: none;">
+            <div class="form-group">
+                <input type="text" name="url" placeholder="Url du GitHub">
+            </div>
+            <button type="submit" value="GetGit">Récupérer le répertoire</button>
+        </form>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileName = document.getElementById('fileName');
+        const gitIcon = document.getElementById('gitIcon');
+
+        fileInput.addEventListener('change', function() {
+            fileName.textContent = this.files[0].name;
+        });
+
+        function toggleForms() {
+            const uploadForm = document.getElementById('uploadForm');
+            const fetchForm = document.getElementById('fetchForm');
+
+            if (uploadForm.style.display === 'block') {
+                uploadForm.style.display = 'none';
+                fetchForm.style.display = 'block';
+                gitIcon.innerHTML = `<path d="M104.167 46.875V98.9583C104.167 101.721 103.069 104.371 101.116 106.324C99.1622 108.278 96.5127 109.375 93.75 109.375H31.25C28.4873 109.375 25.8378 108.278 23.8843 106.324C21.9308 104.371 20.8333 101.721 20.8333 98.9583V26.0417C20.8333 23.279 21.9308 20.6295 23.8843 18.676C25.8378 16.7225 28.4873 15.625 31.25 15.625H72.9166M104.167 46.875V45.9792C104.166 43.2167 103.068 40.5676 101.115 38.6146L81.1771 18.6771C79.224 16.7234 76.5749 15.6256 73.8125 15.625H72.9166M104.167 46.875H83.3333C80.5706 46.875 77.9211 45.7775 75.9676 43.824C74.0141 41.8705 72.9166 39.221 72.9166 36.4583V15.625" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>`;
+            } else {
+                uploadForm.style.display = 'block';
+                fetchForm.style.display = 'none';
+                gitIcon.innerHTML = `<path d="M62.5 10.4167C55.6603 10.4167 48.8876 11.7638 42.5686 14.3813C36.2495 16.9987 30.5079 20.8351 25.6715 25.6715C15.904 35.439 10.4167 48.6866 10.4167 62.5C10.4167 85.5208 25.3646 105.052 46.0417 111.979C48.6459 112.396 49.4792 110.781 49.4792 109.375V100.573C35.0521 103.698 31.9792 93.5938 31.9792 93.5938C29.5834 87.5521 26.1979 85.9375 26.1979 85.9375C21.4584 82.7083 26.5625 82.8125 26.5625 82.8125C31.7709 83.1771 34.5313 88.1771 34.5313 88.1771C39.0625 96.0938 46.7188 93.75 49.6875 92.5C50.1563 89.1146 51.5104 86.8229 52.9688 85.5208C41.4063 84.2188 29.2709 79.7396 29.2709 59.8958C29.2709 54.1146 31.25 49.4792 34.6354 45.7813C34.1146 44.4792 32.2917 39.0625 35.1563 32.0313C35.1563 32.0313 39.5313 30.625 49.4792 37.3438C53.5938 36.1979 58.0729 35.625 62.5 35.625C66.9271 35.625 71.4063 36.1979 75.5209 37.3438C85.4688 30.625 89.8438 32.0313 89.8438 32.0313C92.7084 39.0625 90.8854 44.4792 90.3646 45.7813C93.75 49.4792 95.7292 54.1146 95.7292 59.8958C95.7292 79.7917 83.5417 84.1667 71.9271 85.4688C73.8021 87.0833 75.5209 90.2604 75.5209 95.1042V109.375C75.5209 110.781 76.3542 112.448 79.0104 111.979C99.6875 105 114.583 85.5208 114.583 62.5C114.583 55.6603 113.236 48.8876 110.619 42.5686C108.001 36.2495 104.165 30.5079 99.3285 25.6715C94.4921 20.8351 88.7505 16.9987 82.4315 14.3813C76.1124 11.7638 69.3397 10.4167 62.5 10.4167Z" fill="#fff"/>`;
+            }
+        }
+    </script>
+</body>
+
+</html>

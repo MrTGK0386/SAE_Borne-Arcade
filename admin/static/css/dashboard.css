@@ -1,0 +1,234 @@
+@font-face {
+    font-family: 'MarkPro';
+    src: url('../fonts/Mark-Pro/Mark-Pro.woff2') format('woff2'),
+        url('../fonts/Mark-Pro/Mark-Pro.woff') format('woff');
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'MarkPro', sans-serif;
+}
+
+h4 {
+    margin: 0;
+    font-size: 20px;
+}
+
+p {
+    margin: 0;
+}
+
+svg {
+    width: 125px;
+    height: 125px;
+}
+
+.sidebar-header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    height: 100vh;
+    width: 12vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.main-content {
+    margin-left: 12vw;
+    height: 100vh;
+}
+
+.content-header {
+    width: 88vw;
+    height: 390px;
+    background: linear-gradient(180deg, #5CB3A9 70%, #fff 30%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    width: 380px;
+    background-color: #fff;
+    padding: 24px;
+    border-radius: 24px;
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+    margin-top: 5%;
+}
+
+.content-header-container {
+    width: 1400px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.container-statusIcon {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.container-status {
+    text-align: center;
+}
+
+.content-body{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.container-left{
+    background-color: #fff;
+    height:calc(55vh - 20px);
+    width: calc(38vw - 20px);    
+    border-radius: 24px;
+    box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.18);
+    padding: 20px;
+    overflow-y: scroll;
+}
+
+.container-right{
+    background-color: #fff;
+    height:calc(55vh - 20px);
+    width: calc(38vw - 20px);    
+    border-radius: 24px;
+    box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.18);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.canvasjs-chart-credit{
+    display: none !important;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 8px;
+    text-align: left;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  th {
+    background-color: #5CB3A9;
+    color: white;
+  }
+  td svg{
+    width: 50px;
+    height: 50px;
+  }
+  
+.container-left input[type="text"]{
+    width: calc(100% - 40px);
+    padding: 20px;
+    border-radius: 4px;
+    border: 0px solid #3b4252;
+    background-color: #F8F8F8;
+    color: #000;
+    text-align: left;
+    font-family: 'MarkPro', sans-serif;
+}
+
+.container-left label {
+    text-align: left;
+}
+
+.container-header-right a{
+    cursor: pointer;
+}
+
+.container-header-right svg{
+    width: 25px;
+    height: 25px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 14px;
+    border: 1px solid #888;
+    width: 20%;
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+    
+  .close_2 {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus,
+  .close_2:hover,
+  .close_2:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+form {
+    margin: 20px auto;
+    width: 300px;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #5CB3A9;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #498f87;
+}
+
+header svg{
+    height: 50px;
+    width: 50px;
+}
